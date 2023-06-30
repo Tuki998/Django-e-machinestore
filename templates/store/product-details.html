@@ -1,0 +1,310 @@
+{% extends 'base.html' %}
+{% load static %}
+{% static "img" as baseUrl %} 
+{% load crispy_forms_tags %}
+{% block title %}- {{product.title}}{% endblock title %}
+{% block content %}
+
+<div class="site-section py-5">
+    <div class="container">
+        <ul class="breadcrumb bg-white">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'products' %}">Product</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'products' %}?category={{category.category}}">{{product.category}}</a></li>
+            <li class="breadcrumb-item">{{product.title}}</li>
+        </ul>
+
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="row no-gutters">
+                    <div class="col-md-9">
+                        <div class="btn-fullscreen" data-fancybox-trigger="product"><span class="icon-fullscreen"></span></div>
+                        <div class="d-none">
+                        {% for images in product_images %}
+                            <div class="img-place" data-fancybox="product" data-src="{{images.image.url}}">
+                                <img src="{{images.image.url}}" alt="{{product.title}}">
+                            </div>
+                        {% endfor %}
+                         <div class="img-place" data-fancybox="product" data-src="{{images.image.url}}">
+                                <img src="{{product.thumbnail.url}}" alt="{{product.title}}">
+                            </div>
+
+                        </div>
+                        <div class="owl-carousel product-single">
+                        {% for images in product_images %}
+                            <div class="item">
+                                <div class="img-place">
+                                    <img src="{{images.image.url}}" alt="{{product.title}}">
+                                </div>
+                            </div>
+                        {% endfor %}
+                         <div class="item">
+                                <div class="img-place">
+                                    <img src="{{product.thumbnail.url}}" alt="{{product.title}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="product-single-thumb">
+                        {% for images in product_images %}
+                            <div class="product-item active">
+                                <img src="{{images.image.url}}" alt="{{product.title}}">
+                            </div>
+                        {% endfor %}
+                         <div class="product-item active">
+                                <img src="{{product.thumbnail.url}}" alt="{{product.title}}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 py-3">
+                <h3>
+                {{product.title}}
+                </h3>
+                <div class="ratings text-warning">
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star-o"></span>
+                </div>
+                <p class="mt-3">
+                {{product.detail_preview}}
+                </p>
+
+                {% if product.availiability %}
+                <p><span class="fs-large fw-bold">Availability:</span> {{product.availiability}}</p>
+                {% endif %}
+
+                <p class="fs-large fw-bold mb-1 mt-3">Color:</p>
+                <div class="color-pick" data-role="selected" data-multiple="no">
+                    <span class="color-item bg-danger select-target"></span>
+                    <span class="color-item bg-warning select-target"></span>
+                    <span class="color-item bg-success select-target"></span>
+                    <span class="color-item bg-primary select-target"></span>
+                    <span class="color-item bg-dark select-target"></span>
+                </div>
+
+                <p class="fs-large fw-bold mb-1 mt-3">Size:</p>
+                <div class="btn-group btn-group-gap size-pick" data-role="selected" data-multiple="no">
+                    <button class="btn btn-theme-outline btn-sm select-target">XS</button>
+                    <button class="btn btn-theme-outline btn-sm select-target">S</button>
+                    <button class="btn btn-theme-outline btn-sm select-target">M</button>
+                    <button class="btn btn-theme-outline btn-sm select-target">L</button>
+                    <button class="btn btn-theme-outline btn-sm select-target">XL</button>
+                </div>
+
+                <p class="fs-large fw-bold mb-1 mt-3">Quantity:</p>
+                <div class="number-input">
+                    <a href="{% url 'decrease' product.id %}" class="btn btn-theme btn-sm btn-decrease"><span class="icon-minus"></span></a>
+                    <input type="number" class="form-control" name="number"  value="{{product.quantity}}" min="1" max="250">
+                    <a href="{% url 'addtocart' product.id %}" class="btn btn-theme btn-sm btn-increase"><span class="icon-plus"></span></a>
+                </div>
+
+                <h4 class="mt-4 mb-3">Price: GHC{{product.price}}</h4>
+                <a href="{% url 'addtocart' product.id %}" class="btn btn-theme-outline mr-2"><span class="icon-add_shopping_cart"></span> Add to Cart</a>
+                <a href="#" class="btn btn-theme">Proceed Checkout</a>
+            </div>
+        </div>
+
+        <div class="d-block mt-5">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Description</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Review ({{comments.count}})</a>
+                </li>
+            </ul>
+            <div class="tab-content mt-3" id="myTabContent">
+                <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    {{product.detail|safe}}
+                </div>
+                {% comment %} reviews {% endcomment %}
+                <div class="tab-pane fade show active" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                    <div class="row">
+                        <div class="col-sm-10 col-md-8 col-lg-6">
+                            <div class="product-review">
+                                <!-- Review -->
+                                {% for comment in comments %}
+                                <div class="review-dialog">
+                                    <div class="profile-picture">
+                                        <img src="{% static 'img/avatar_1.jpg' %}" alt="AVATAR">
+                                    </div>
+
+                                    <div class="ml-3">
+                                        <div class="review-content mb-2">
+                                            <span class="fg-dark fs-large">{{comment.name}}</span>
+
+                                            <span class="ratings">
+                                                <i class="icon-star"></i>
+                                                <i class="icon-star"></i>
+                                                <i class="icon-star"></i>
+                                                <i class="icon-star"></i>
+                                                <i class="icon-star-half"></i>
+                                            </span>
+                                        </div>
+
+                                        <p class="mb-0 text-secondary">
+                                        {{comment.review}}
+                                        </p>
+                                    </div>
+                                </div>
+                                {% empty %}
+                                <p>Be the first to leave a review</p>
+                                {% endfor %}
+                                
+                                <!-- Add review -->
+                                <form class="review-form mt-5" action="" method="POST">
+                                {% csrf_token %}
+                                    <h5 class="fg-dark">Add a review</h5>
+
+                                    <p class="stext-102 cl6">
+                                        Your email address will not be published. Required fields are marked *
+                                    </p>
+
+                                    <div class="row p-b-25">
+                                       {{form|crispy}}
+                                    </div>
+
+                                    <button type="submit" class="btn btn-theme">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row no-gutters bg-light mt-5">
+            <div class="col-12">
+                <ul class="list-unstyled list-inline text-center mb-0 py-4">
+                    <li class="list-inline-item">Name: <span class="text-secondary">{{product.title}}</span></li>
+                    <li class="list-inline-item">Categories: <span class="text-secondary">{{product.category}}</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-12 mt-3">
+                <h2 class="title-section text-center">Similar Product</h2>
+            </div>
+            {% for product in products %}
+                <!-- Modal Product -->
+                <div class="modal fade" id="modalProduct-{{product.id}}" tabindex="-1" role="dialog" aria-labelledby="productLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <button class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true" class="icon-close2"></span>
+                                </button>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="owl-carousel product-single">
+                                            <div class="item">
+                                                <div class="img-place">
+                                                    <img src="{{product.thumbnail.url}}" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="img-place">
+                                                    <img src="{{product.thumbnail.url}}" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="img-place">
+                                                    <img src="{{product.thumbnail.url}}" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="img-place">
+                                                    <img src="{{product.thumbnail.url}}" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4 class="modal-title" id="productLabel">{{product.title}}</h4>
+                                        <div class="ratings text-warning">
+                                            <span class="icon icon-star"></span>
+                                            <span class="icon icon-star"></span>
+                                            <span class="icon icon-star"></span>
+                                            <span class="icon icon-star"></span>
+                                            <span class="icon icon-star-o"></span>
+                                        </div>
+                                        <p class="mt-3">
+                                        {{product.detail_preview}}
+                                        </p>
+
+                                        {% if product.availiability %}
+                                        <p><span class="fs-large fw-bold">Availability:</span> {{product.availiability}}</p>
+                                        {% endif %}
+
+                                        {% comment %} 
+                                        <p class="fs-large fw-bold mb-1 mt-3">Color:</p>
+                                    <div class="color-pick">
+                                            <span class="color-item bg-danger"></span>
+                                            <span class="color-item bg-warning"></span>
+                                            <span class="color-item bg-success"></span>
+                                            <span class="color-item bg-primary"></span>
+                                            <span class="color-item bg-dark"></span>
+                                        </div>
+
+                                        <p class="fs-large fw-bold mb-1 mt-3">Size:</p>
+                                        <div class="btn-group btn-group-gap">
+                                            <button class="btn btn-theme-outline btn-sm">XS</button>
+                                            <button class="btn btn-theme-outline btn-sm">S</button>
+                                            <button class="btn btn-theme-outline btn-sm">M</button>
+                                            <button class="btn btn-theme-outline btn-sm">L</button>
+                                            <button class="btn btn-theme-outline btn-sm">XL</button>
+                                        </div> {% endcomment %}
+
+                                        <p class="fs-large fw-bold mb-1 mt-3">Quantity:</p>
+                                        <div class="number-input">
+                                             <a href="{% url 'decrease' product.id %}" class="btn btn-theme btn-sm btn-decrease"><span class="icon-minus"></span></a>
+                    <input type="number" class="form-control" name="number"  value="{{product.quantity}}" min="1" max="250">
+                    <a href="{% url 'addtocart' product.id %}" class="btn btn-theme btn-sm btn-increase"><span class="icon-plus"></span></a>
+                                        </div>
+
+                                        <h5 class="mt-4 mb-3">Price: <span class="fg-theme">
+                                        GHC{{product.price}}
+                                        </span></h5>
+                                        <a href="#" class="btn btn-theme-outline mr-2 my-1"><span class="icon-add_shopping_cart"></span> Add to Cart</a>
+                                        <a href="checkout.html" class="btn btn-theme my-1">Proceed Checkout</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                <!-- End modal product -->
+
+            <div class="col-lg-3">
+                <div class="card card-product">
+                    <div class="card-header">
+                        <div class="btn btn-fab btn-sm" data-toggle-class="active" data-toggle="tooltip" data-placement="left" title="Like it"><span class="icon-heart"></span></div>
+                        <div class="btn btn-fab btn-sm" data-toggle-class="active" data-toggle="tooltip" data-placement="left" title="Add to Cart"><span class="icon-shopping-cart"></span></div>
+                        <div class="btn btn-fab btn-sm" data-fancybox data-src="{{product.thumbnail.url}}" data-toggle="tooltip" data-placement="left" title="View Image"><span class="icon-fullscreen fs-normal"></span></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="img-place">
+                            <img src="{{product.thumbnail.url}}" alt="{{product.title}}">
+                        </div>
+                        <button class="btn btn-theme btn-rounded btn-sm btn-noanimate" data-toggle="modal" data-target="#modalProduct-{{product.id}}">Quick View</button>
+                    </div>
+                    <div class="card-footer">
+                        <div class="caption">
+                            <a href="{% url 'detail' product.slug %}" class="product-title">{{product.title}}</a>
+                            <p class="fg-theme">GHC{{product.price}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

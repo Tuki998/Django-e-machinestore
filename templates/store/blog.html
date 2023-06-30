@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% static "img" as baseUrl %} 
+{% block title %}- Blog{% endblock title %}
+{% block content %}
+<div class="site-section hero-page bg-image bg-image-parallax overlay-dark" style="background-image: url({% static 'img/campaign-men.jpg' %})">
+    <div class="container">
+        <div class="caption text-center fg-white">
+            <h1>Blog</h1>
+        </div>
+    </div>
+</div>
+
+<div class="site-section blog-page">
+    <div class="container">
+        <div class="row mt-4">
+        {% for blog in page_objects  %}
+            <div class="col-md-6 col-lg-4 mb-5">
+            {% if blog.thumbnail %}
+                <a href="{% url 'blogDetail' blog.slug %}"><img src="{{blog.thumbnail.url}}" alt="{{blog.title}}" class="img-fluid rounded mb-4"></a>
+            {% endif %}
+                <h3 class="fw-normal"><a href="{% url 'blogDetail' blog.slug %}" class="text-dark">{{blog.title|title}}</a></h3>
+                <div class="text-secondary">{{blog.created}} <span class="mx-2"></span></div>
+            </div>
+        {% endfor %}
+        </div>
+
+        <nav>
+             <ul class="pagination justify-content-end">
+            {% if page_objects.has_previous  %}
+                <li class="page-item">
+                <a href="?page={{page_objects.previous_page_number}}" class="page-link">Previous</a>
+                </li>
+            {% endif %}
+            <li class="page-item">
+            <a href="#" class="page-link">{{page_objects.number}}</a>
+            </li>
+            {% if page_objects.has_next  %}
+                <li class="page-item">
+                <a href="?page={{page_objects.next_page_number }}" class="page-link">Next</a>
+                </li>
+            {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}- Checkout{% endblock title %}
+{% block content %}
+<div class="site-section py-5">
+    <div class="container">
+        <h2 class="text-center">Checkout & Payments</h2>
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-6 px-lg-5">
+                <h5 class="text-secondary">Shipping Details</h5>
+                <hr>
+                <div class="row mb-5">
+                    <div class="col-md-6">
+                        <div class="input-group floating-label my-2">
+                            <input type="number" id="contactPayment" class="form-control" required>
+                            <label for="contactPayment" class="floating-control-label">Phone Number</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group floating-label my-2">
+                            <input type="text" id="emailPayment" class="form-control" required>
+                            <label for="emailPayment" class="floating-control-label">Email</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="input-group floating-label my-2">
+                            <textarea id="address" class="form-control" required rows="8"></textarea>
+                            <label for="address" class="floating-control-label">Address</label>
+                        </div>
+                    </div>
+                </div>
+
+                <h5 class="text-secondary">Payment Details</h5>
+                <hr>
+
+                <div class="row mb-5">
+                    <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group floating-label my-2">
+                                <input type="text" id="namePayment" class="form-control" value="Mikhail Abdillah" required>
+                                <label for="namePayment" class="floating-control-label">Name on Card</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="input-group floating-label my-2">
+                            <input type="number" id="cardNumberPayment" class="form-control" required>
+                            <label for="cardNumberPayment" class="floating-control-label">Card Number</label>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="row">
+                            <div class="col-6 px-2">
+                                <div class="input-group floating-label my-2">
+                                    <input type="number" id="expPayment" class="form-control" required>
+                                    <label for="expPayment" class="floating-control-label">Expire Date</label>
+                                </div>
+                            </div>
+                            <div class="col-6 px-2">
+                                <div class="input-group floating-label my-2">
+                                    <input type="number" id="CVVPayment" class="form-control" required>
+                                    <label for="CVVPayment" class="floating-control-label">CVV Code</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 px-lg-5">
+                <h5 class="text-secondary">Your Orders</h5>
+                <ul class="product-cart-list">
+                {% for item in items %}
+                    <li class="cart-item">
+                        <div class="img-place">
+                            <img src="{{item.item.thumbnail.url}}" alt="{{item.item.title}}">
+                        </div>
+                        <div class="caption">
+                            <h5>{{item.item.title}}</h5>
+                            <div class="mb-0">Qty:
+                                <div class="d-inline-flex number-input number-input-sm">
+                                    <a href="{% url 'decrease' item.item.id %}" class="btn btn-theme btn-sm btn-decrease"><span class="icon-minus"></span></a>
+                                    <input type="number" class="form-control" name="number" value="{{item.quantity}}" min="1" max="250">
+                                    <a href="{% url 'addtocart' item.item.id %}" class="btn btn-theme btn-sm btn-increase"><span class="icon-plus"></span></a>
+                                </div>
+                            </div>
+                            <p class="mb-0">Price: <span class="fg-theme">GHC{{item.item.price}}</span></p>
+                        </div>
+                        <a href="{% url 'remove' item.item.id %}" class="btn btn-fab btn-sm"><span class="icon-trash-o"></span></a>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <div class="py-2 mb-4">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Coupon Code">
+                        <button class="btn btn-theme">Apply</button>
+                    </div>
+                </div>
+        
+                <div class="product-cart-invoice">
+                    {% comment %} <h6 class="d-flex flex-row justify-content-between">
+                        <span>SubTotal </span>
+                        <span class="text-right text-secondary">$39.91</span>
+                    </h6>
+                    <h6 class="d-flex flex-row justify-content-between">
+                        <span>Shipping </span>
+                        <span class="text-right text-secondary">$3.99</span>
+                    </h6> {% endcomment %}
+                    <h5 class="d-flex flex-row justify-content-between mt-3">
+                        <span>Total </span>
+                        <span class="text-right text-secondary">GHC{{totalPrice}}</span>
+                    </h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <button class="btn btn-theme payment"><span class="icon-next_week"></span> Confirm & Pay</button>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

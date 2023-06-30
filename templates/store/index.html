@@ -1,0 +1,403 @@
+{% extends 'base.html' %}
+{% load static %}
+{% static "img" as baseUrl %} 
+{% block content %}
+
+<div class="site-section home-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="tiles-wrapper tiles-2">
+                    <div class="img-place">
+                        <img src="{% static 'img/hero-img_1.jpg' %}" alt="">
+                    </div>
+                    <div class="caption fg-white">
+                        <p class="mb-1">Late Summer Edition</p>
+                        <h1 class="fw-light">New Summer Arrivals</h1>
+                        <h4 class="mb-4">Get <span class="fg-theme">40%</span> Off</h4>
+                        <a href="{% url 'products' %}" class="btn btn-theme">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="tiles-wrapper tiles-4">
+                    <div class="img-place">
+                        <img src="{% static 'img/Skinny_Fit_Blazer.jpg' %}" alt="">
+                    </div>
+                    <div class="caption">
+                        <a href="{% url 'products' %}" class="card-caption">
+                            <div class="small pos-top">30% Off</div>
+                            Skinny Fit Blazzer
+                        </a>
+                    </div>
+                </div>
+                <div class="tiles-wrapper tiles-4">
+                    <div class="img-place">
+                        <img src="{% static 'img/family_campaign_kids.jpg' %}" alt="">
+                    </div>
+                    <div class="caption">
+                        <a href="{% url 'products' %}" class="card-caption">
+                            <div class="small pos-bottom">30% Off</div>
+                            Family Sweater
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="site-section py-5">
+    <div class="container">
+        <h3 class="title-section">Featured Product</h3>
+
+        <div class="row justify-content-center mt-2">
+
+            {% for product in featured %}
+            <!-- Modal Product -->
+            <div class="modal fade" id="modalProduct-{{product.id}}" tabindex="-1" role="dialog" aria-labelledby="productLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true" class="icon-close2"></span>
+                            </button>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="owl-carousel product-single">
+                                        <div class="item">
+                                            <div class="img-place">
+                                                <img src="{{product.thumbnail.url}}" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                            <div class="img-place">
+                                                <img src="{{product.thumbnail.url}}" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                            <div class="img-place">
+                                                <img src="{{product.thumbnail.url}}" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                            <div class="img-place">
+                                                <img src="{{product.thumbnail.url}}" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4 class="modal-title" id="productLabel">{{product.title}}</h4>
+                                    <div class="ratings text-warning">
+                                        <span class="icon icon-star"></span>
+                                        <span class="icon icon-star"></span>
+                                        <span class="icon icon-star"></span>
+                                        <span class="icon icon-star"></span>
+                                        <span class="icon icon-star-o"></span>
+                                    </div>
+                                    <p class="mt-3">
+                                    {{product.detail_preview}}
+                                    </p>
+
+                                    {% if product.availiability %}
+                                    <p><span class="fs-large fw-bold">Availability:</span> {{product.availiability}}</p>
+                                    {% endif %}
+
+                                    {% comment %} 
+                                     <p class="fs-large fw-bold mb-1 mt-3">Color:</p>
+                                   <div class="color-pick">
+                                        <span class="color-item bg-danger"></span>
+                                        <span class="color-item bg-warning"></span>
+                                        <span class="color-item bg-success"></span>
+                                        <span class="color-item bg-primary"></span>
+                                        <span class="color-item bg-dark"></span>
+                                    </div>
+
+                                    <p class="fs-large fw-bold mb-1 mt-3">Size:</p>
+                                    <div class="btn-group btn-group-gap">
+                                        <button class="btn btn-theme-outline btn-sm">XS</button>
+                                        <button class="btn btn-theme-outline btn-sm">S</button>
+                                        <button class="btn btn-theme-outline btn-sm">M</button>
+                                        <button class="btn btn-theme-outline btn-sm">L</button>
+                                        <button class="btn btn-theme-outline btn-sm">XL</button>
+                                    </div> {% endcomment %}
+
+                                    <p class="fs-large fw-bold mb-1 mt-3">Quantity:</p>
+                                    <div class="number-input">
+                                         <a href="{% url 'decrease' product.id %}" class="btn btn-theme btn-sm btn-decrease"><span class="icon-minus"></span></a>
+                    <input type="number" class="form-control" name="number"  value="{{product.quantity}}" min="1" max="250">
+                    <a href="{% url 'addtocart' product.id %}" class="btn btn-theme btn-sm btn-increase"><span class="icon-plus"></span></a>
+                                    </div>
+
+                                    <h5 class="mt-4 mb-3">Price: <span class="fg-theme">
+                                    GHC{{product.price}}
+                                    </span></h5>
+                                    <a href="{% url 'addtocart' product.id %}" class="btn btn-theme-outline mr-2 my-1"><span class="icon-add_shopping_cart"></span> Add to Cart</a>
+                                    <a href="{% url 'checkout' %}" class="btn btn-theme my-1">Proceed Checkout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <!-- End modal product -->
+
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card card-product">
+                    <div class="card-header">
+                        <div class="btn btn-fab btn-sm" data-toggle-class="active" data-toggle="tooltip" data-placement="left" title="Like it"><span class="icon-heart"></span></div>
+                        <a href="{% url 'addtocart' product.id %}" class="btn btn-fab btn-sm" data-toggle-class="active" data-toggle="tooltip" data-placement="left" title="Add to Cart"><span class="icon-shopping-cart"></span></a>
+                        <div class="btn btn-fab btn-sm" data-fancybox data-src="{{product.thumbnail.url}}" data-toggle="tooltip" data-placement="left" title="View Image"><span class="icon-fullscreen fs-normal"></span></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="img-place">
+                            <img src="{{product.thumbnail.url}}" alt="{{product.title}}">
+                        </div>
+                        <button class="btn btn-theme btn-rounded btn-sm btn-noanimate" data-toggle="modal" data-target="#modalProduct-{{product.id}}">Quick View</button>
+                    </div>
+                    <div class="card-footer">
+                        <div class="caption">
+                            <a href="{% url 'detail' product.slug %}" class="product-title">{{product.title}}</a>
+                            <p class="fg-theme">GHC{{product.price}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="site-section pt-3">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h3 class="title-section">New Arrivals</h3>
+
+                <div class="row mt-2">
+                {% for product in new_arrival %}
+                    <!-- Modal Product -->
+                    <div class="modal fade" id="modalProduct-{{product.id}}" tabindex="-1" role="dialog" aria-labelledby="productLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <button class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true" class="icon-close2"></span>
+                                    </button>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="owl-carousel product-single">
+                                                <div class="item">
+                                                    <div class="img-place">
+                                                        <img src="{{product.thumbnail.url}}" alt="">
+                                                    </div>
+                                                </div>
+                                                <div class="item">
+                                                    <div class="img-place">
+                                                        <img src="{{product.thumbnail.url}}" alt="">
+                                                    </div>
+                                                </div>
+                                                <div class="item">
+                                                    <div class="img-place">
+                                                        <img src="{{product.thumbnail.url}}" alt="">
+                                                    </div>
+                                                </div>
+                                                <div class="item">
+                                                    <div class="img-place">
+                                                        <img src="{{product.thumbnail.url}}" alt="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h4 class="modal-title" id="productLabel">{{product.title}}</h4>
+                                            <div class="ratings text-warning">
+                                                <span class="icon icon-star"></span>
+                                                <span class="icon icon-star"></span>
+                                                <span class="icon icon-star"></span>
+                                                <span class="icon icon-star"></span>
+                                                <span class="icon icon-star-o"></span>
+                                            </div>
+                                            <p class="mt-3">
+                                            {{product.detail_preview}}
+                                            </p>
+
+                                            {% if product.availiability %}
+                                            <p><span class="fs-large fw-bold">Availability:</span> {{product.availiability}}</p>
+                                            {% endif %}
+                                            <p class="fs-large fw-bold mb-1 mt-3">Quantity:</p>
+                                            <div class="number-input">
+                                            <a href="{% url 'decrease' product.id %}" class="btn btn-theme btn-sm btn-decrease"><span class="icon-minus"></span></a>
+                                            <input type="number" class="form-control" name="number" value="1" min="1" max="250">
+                                            <a href="{% url 'addtocart' product.id %}" class="btn btn-theme btn-sm btn-increase"><span class="icon-plus"></span></a>
+                                            </div>
+
+                                            <h5 class="mt-4 mb-3">Price: <span class="fg-theme">
+                                            GHC{{product.price}}
+                                            </span></h5>
+                                            <a href="{% url 'addtocart' product.id %}" class="btn btn-theme-outline mr-2 my-1"><span class="icon-add_shopping_cart"></span> Add to Cart</a>
+                                            <a href="{% url 'checkout' %}" class="btn btn-theme my-1">Proceed Checkout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                    <!-- End modal product -->
+
+                    <div class="col-sm-6 col-md-4">
+                        <div class="card card-product">
+                            <div class="card-header">
+                                <div class="btn btn-fab btn-sm" data-toggle-class="active" data-toggle="tooltip" data-placement="left" title="Like it"><span class="icon-heart"></span></div>
+                                <a href="{% url 'addtocart' product.id %}" class="btn btn-fab btn-sm" data-toggle-class="active" data-toggle="tooltip" data-placement="left" title="Add to Cart"><span class="icon-shopping-cart"></span></a>
+                                <div class="btn btn-fab btn-sm" data-fancybox data-src="{{product.thumbnail.url}}" data-toggle="tooltip" data-placement="left" title="View Image"><span class="icon-fullscreen fs-normal"></span></div>
+                            </div>
+                            <div class="card-body">
+                                <div class="img-place">
+                                    <img src="{{product.thumbnail.url}}" alt="">
+                                </div>
+                                <button class="btn btn-theme btn-rounded btn-sm btn-noanimate" data-toggle="modal" data-target="#modalProduct-{{product.id}}">Quick View</button>
+                            </div>
+                            <div class="card-footer">
+                                <div class="caption">
+                                    <a href="{% url 'detail' product.slug %}" class="product-title">
+                                    {{product.price}}
+                                    </a>
+                                    <p class="fg-theme">GHC {{product.price}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                    <div class="col-12 col-md-8">
+                        <div class="card card-collection-tiles">
+                            <div class="card-body">
+                                <div class="img-place">
+                                    <img src="{% static 'img/Skinny_Fit_Blazer.jpg' %}" alt="">
+                                </div>
+                                <div class="caption fg-white">
+                                    <p class="mb-1">Find the best Blazer Collection</p>
+                                    <h1 class="fw-semibold">BLAZER</h1>
+                                </div>
+                                <a href="{% url 'products' %}" class="btn btn-link">Shop Now <span class="icon icon-angle-right"></span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-8">
+                        <div class="row no-gutters">
+                            <div class="col-12">
+                                <div class="card card-collection-tiles_2">
+                                    <div class="card-body">
+                                        <div class="img-place">
+                                            <img src="{% static 'img/image_1.jpg' %}" alt="">
+                                        </div>
+                                        <div class="caption">
+                                            <h2>Accessories</h2>
+                                        </div>
+                                        <a href="{% url 'products' %}" class="btn btn-link">Shop Now <span class="icon icon-angle-right"></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="card card-collection-tiles_2">
+                                    <div class="card-body">
+                                        <div class="img-place">
+                                            <img src="{% static 'img/image_2.jpg' %}" alt="">
+                                        </div>
+                                        <div class="caption">
+                                            <h2>Casual Clothes</h2>
+                                        </div>
+                                        <a href="{% url 'products' %}" class="btn btn-link">Shop Now <span class="icon icon-angle-right"></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{% url 'products' %}" class="btn btn-theme px-5">View All</a>
+        </div>
+    </div>
+</div>
+
+<div class="site-section parallax-section bg-image bg-image-parallax overlay-dark" style="background-image: url({% static 'img/family_campaign_kids.jpg)' %}">
+    <div class="container">
+        <div class="d-block text-center fg-white">
+            <p class="mb-1">Lorem ipsum dolor sit ammet</p>
+            <h1>Online Shop Up To 50% Off</h1>
+        </div>
+    </div>
+</div>
+
+{% if blogs.count > 0 %}
+
+<div class="site-section">
+    <div class="container">
+        <h2 class="title-section text-center">Our Latest News</h2>
+
+        <div class="row mt-4">
+            {% for blog in blogs %}
+            <div class="col-md-6 col-lg-4 mb-5">
+            {% if blog.thumbnail %}
+                <a href="{% url 'blogDetail' blog.slug %}"><img src="{{blog.thumbnail.url}}" alt="" class="img-fluid rounded mb-4"></a>
+            {% endif %}
+                <h3 class="fw-normal"><a href="{% url 'blogDetail' blog.slug %}" class="text-dark">{{blog.title|title}}</a></h3>
+                <div class="text-secondary">{{blog.created}}<div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center">
+            <a href="{% url 'blog' %}" class="btn btn-theme">View More</a>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="site-section info-section bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card card-info text-center border-0">
+                    <div class="card-body">
+                        <div class="img-place">
+                            <img src="{% static 'img/svg/payment.svg' %}" alt="">
+                        </div>
+                        <h5>100% Secure Payments</h5>
+                        <p>We offer competitive prices on our 100 million plus product range.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card card-info text-center">
+                    <div class="card-body">
+                        <div class="img-place">
+                            <img src="{% static 'img/svg/around-world.svg' %}" alt="">
+                        </div>
+                        <h5>World Wide Delivery</h5>
+                        <p>We offer competitive prices on our 100 million plus product range.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card card-info text-center">
+                    <div class="card-body">
+                        <div class="img-place">
+                            <img src="{% static 'img/svg/customer-service.svg' %}" alt="">
+                        </div>
+                        <h5>24/7 Help Center</h5>
+                        <p>We offer competitive prices on our 100 million plus product range.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

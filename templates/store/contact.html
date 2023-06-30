@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}- Contact us{% endblock title %}
+{% block content %}
+<div class="site-section hero-page-contact bg-image bg-image-parallax overlay-dark" style="background-image: url({% static 'img/campaign-men.jpg' %})">
+    <div class="container">
+        <div class="caption text-center fg-white">
+            <h1>Get in Touch</h1>
+        </div>
+    </div>
+</div>
+
+<div class="site-section contact-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="icon icon-map-marker"></span>
+                    </div>
+                    <div class="card-body">
+                        <p class="fg-theme mb-0">Location</p>
+                        <h5>083 Street, Country</h5>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <span class="icon icon-phone2"></span>
+                    </div>
+                    <div class="card-body">
+                        <p class="fg-theme mb-0">Phone Number</p>
+                        <h5>+023 1382-2394-222</h5>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <span class="icon icon-mail_outline"></span>
+                    </div>
+                    <div class="card-body">
+                        <p class="fg-theme mb-0">Email</p>
+                        <h5>example@mail.com</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <form class="contact-form" action="" method="POST">
+                {% csrf_token %}
+                    <div class="form-row">
+                        <div class="col-12">
+                            <div class="input-group floating-label my-2">
+                            {{form.fullname}}
+                                <label for="fullname" class="floating-control-label">Fullname</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="input-group floating-label my-2">
+                                {{form.email}}
+                                <label for="email" class="floating-control-label">Email</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="input-group floating-label my-2">
+                                {{form.subject}}
+                                <label for="subject" class="floating-control-label">Subject</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="input-group floating-label my-2">
+                                {{form.message}}
+                                <label for="message" class="floating-control-label">Message</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="input-group my-2">
+                                <div class="custom-file">
+                                    {{form.attach}}
+                                    <label for="attach" class="custom-file-label"><span class="icon-attach_file"></span> Attach File</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <button type="submit" class="btn btn-theme">Send Message</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Google Maps -->
+<div class="maps-container">
+    <div id="google-map"></div>
+</div>
+
+{% endblock content %}
