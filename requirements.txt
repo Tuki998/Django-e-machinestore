@@ -16,7 +16,7 @@ idna==2.10
 jmespath==0.10.0
 paystack==1.5.0
 paystackapi==2.0.0
-pillow-10.0.0
+pillow==10.0.0
 psycopg2-binary==2.9.6
 pycodestyle==2.7.0
 python-dateutil==2.8.1
