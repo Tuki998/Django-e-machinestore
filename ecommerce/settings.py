@@ -28,7 +28,7 @@ SECRET_KEY = '_44bf7y+gl59e=2*2&9xx1sf8kn()-kazpms_-a9*s9*heq1%#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['canonshop.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['babynu.uk', 'www.babynu.uk']
 
 
 # Application definition
@@ -170,3 +170,9 @@ s3 = boto3.resource(
 # PAYSTACK
 #PAYSTACK_PUBLIC_KEY = ''
 #PAYSTACK_SECRET_KEY = ''
+
+# HTTPS SETTINGS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = False
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
